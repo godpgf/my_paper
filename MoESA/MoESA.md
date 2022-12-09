@@ -1,9 +1,11 @@
-# Mixture-of-Experts Spatial Attention Network for light reflection facial anti-spoofing
+# Mixture-of-Experts Attention Network for light reflection facial anti-spoofing
 
-
+（恒玉帮改word）
 
 ## Abstract
-​    This paper proposes a Mixture-of-Experts Spatial Attention Network(MoESA) for light reflection face anti-spoofing which is simple yet effective that has already been used by millions of user. Specifically, MoESA first uses a shared-bottom feature-extraction module, and then uses a few end-to-end trainable U-Net as expert modules to estimate the multi-frame facial depth maps, a gating network take the input features and output softmax gates assembling the experts with different weights. Last we uses Spatial Attention to merge there recovered multi-frame depth maps to one,  then sent to a simple classifification structure to distinguish the real 3D face from those 2D presentation attacks. Extensive experiments on our datasets demonstrate the superiority of our proposed method over the state of the arts.
+​   1背景和问题、2（方法，简洁 逻辑），3实验和结论
+
+ This paper proposes a Mixture-of-Experts Spatial Attention Network(MoESA) for light reflection face anti-spoofing which is simple yet effective that has already been used by millions of user. Specifically, MoESA first uses a shared-bottom feature-extraction module, and then uses a few end-to-end trainable U-Net as expert modules to estimate the multi-frame facial depth maps, a gating network take the input features and output softmax gates assembling the experts with different weights. Last we uses Spatial Attention to merge there recovered multi-frame depth maps to one,  then sent to a simple classifification structure to distinguish the real 3D face from those 2D presentation attacks. （构造数据集，我们的数据集不明白）Extensive experiments on our datasets demonstrate the superiority of our proposed method over the state of the arts.
 
 Keywords:Mixture-of-Experts,Spatial Attention,gating network,face anti-spoofing
 
@@ -43,11 +45,11 @@ Keywords:Mixture-of-Experts,Spatial Attention,gating network,face anti-spoofing
 
 ## 3.The Proposed Method
 
-​    In this section, we will first introduce the methods for obtaining multi-frame normal cues as input data in Section 3.1, then introduce the Mixture-of-Experts Spatial Attention Network(MoESA) in Section 3.2, and at last rethinking the uneven distribution of samples at Section 3.3.
+​    In this section, we will first introduce the methods for obtaining multi-frame normal cues as input data in Section 3.1, then introduce the Mixture-of-Experts Spatial Attention Network(MoESA) in Section 3.2, and at last rethinking the uneven distribution of samples at Section 3.3.（MoE和SA融一起了）
 
 <img src="./images/fig1.jpg"   align="center"/>
 
-<center> **Figure 1:Mixture-of-Experts Spatial Attention Network.**We uses a few end-to-end trainable U-Net as expect module to estimate the facial depth maps and deal with different attack instruments.Spatial Attention will merge recovered multi-frame depth maps  to one-frame.  </center>
+<center> （输入区，target区，深度图没写，哪个是入口哪个是出口不明白，3个loss引出来，输出放在一排；找超超帮忙）**Figure 1:Mixture-of-Experts Spatial Attention Network.**We uses a few end-to-end trainable U-Net as expect module to estimate the facial depth maps and deal with different attack instruments.Spatial Attention will merge recovered multi-frame depth maps  to one-frame. （每个模块的解释）（data Process 改成预法线信息生成，虚线加箭头，点积没有注释） </center>
 
 ### 3.1.Multi-Frame Normal Cues 
 
@@ -73,6 +75,10 @@ $$
 Normal cues will be normalize at last. **Fig. 2** illustrates the method of obtaining multi-frame normal cues. 
 
 ### 3.2.Mixture-of-Experts Spatial Attention Network
+
+（详细一下模型解构，加图细化；介绍MoE、SA）
+
+
 
 ​    We generated depth maps for $F_r$, and uses end-to-end trainable U-Net to regress these facial depth maps, so the model will understand facial partitions information from input in high-level features, but low-level features still can't know what area the current pixel belongs to, so position embeddings are added to the feature maps directy to retain positional information. After doing so, we found that the model converges faster and the accuracy is improved. 
 
@@ -133,10 +139,14 @@ $$
 <img src="./images/fig3.jpg" width = "500" height = "343"  align="center"/>
 <center> **Figure 3:Hard and Easy Samples.**. Easy Living Face and Easy Spoofing Face case are easy to distinguish, Hard Living Face and Hard Spoofing Face case are hard to distinguish.  </center>
 
+（没写清楚，别的难样本搞不定我们搞得定，目的，每张图都说清楚情况）
+
 ​    We found that most samples in our dataset are well classified, call them easy case.Due to the change of ambient light or the flicker of electronic screen, we will encounter attack samples that are difficult to classify in a few cases, call them hard case. It is difficult for the model to learn how to distinguish hard cases because the number is too less. So we first trained a weak model to mark hard case and easy case, then enlarge the sampling proportion of hard case, last we trained a strong model, and found that the classification ability of the model will be significantly improved. The detailed case and recovered depth maps of them is shown in **Fig. 3**.
 
 ## 4.Experiments
 ### 4.1 Implementation Details
+
+实验目的。
 
 #### Depth Generation
 
